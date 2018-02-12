@@ -1,9 +1,11 @@
 /**
- * �򵥵����ܲ���С��ܣ��ɹ��ο�
+ * 简单的性能测试小框架，可供参考
  * From: Java 8 in Action, P144
- * ����������˳��������ͳ���ӣ��Ͳ�������ǰһǧ�����Ȼ����͵�ʱ�䣬����Ǵ�ͳ������죬������������ԭ��
- * 1�� Stream.iterate���ɵ���װ��Ķ��󣬱����������ֲ������
- * 2�� ���Ѱ�iterate�ֳɶ��������������ִ��
+ * 本例测试了顺序流，传统叠加，和并行流对前一千万个自然数求和的时间，结果是传统叠加最快，并行流最慢，原因：
+ * 1， Stream.iterate生成的是装箱的对象，必须拆箱程数字才能求和
+ * 2， 很难把iterate分成多个独立块来并行执行
+ * 
+ * 另外，像任何其他java代码一样，分支/合并框架需要“预热”或者说要执行几遍才会被JIT编译器优化。这就是为什么在测量性能之前跑几遍程序很重要，下面的测试框架就是这么做的。
  */
 import java.util.function.Function;
 import java.util.stream.Stream;
